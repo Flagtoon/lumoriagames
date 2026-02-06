@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABJAD 2 - Lumoria Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS STYLES --- */
+
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Fredoka One', cursive;
+            background-color: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Main Game Container */
+        #game-container {
+            width: 100%;
+            max-width: 900px;
+            background-color: #fff;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            padding: 20px;
+        }
+
+        /* Background Layer */
+        .bg-layer {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            background: linear-gradient(to bottom, #dbeff9 0%, #dbeff9 55%, #aed581 55%, #aed581 100%);
+            border-radius: 15px;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .ui-btn {
+            background: #8cc63f;
+            border: 2px solid #5a8f29;
+            border-radius: 12px;
+            width: 55px;
+            height: 55px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #5a8f29;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: white;
+            transition: transform 0.1s, box-shadow 0.1s;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .ui-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+            position: relative;
+            z-index: 5;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        /* Alphabet Card */
+        .alphabet-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Letter Grid */
+        .letter-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .letter {
+            width: 100%;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .letter:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Color classes for letters */
+        .c-red { background: #ef476f; }
+        .c-blue { background: #0099ff; }
+        .c-yellow { background: #ffd166; color: #333; }
+        .c-navy { background: #2c3e82; }
+        .c-green { background: #76b041; }
+        .c-cyan { background: #00bcd4; }
+        .c-purple { background: #9c27b0; }
+        .c-pink { background: #ff66b2; }
+        .c-orange { background: #ff7043; }
+        .c-teal { background: #009688; }
+        .c-lime { background: #9ccc65; }
+        .c-indigo { background: #3f51b5; }
+        .c-amber { background: #ffc107; color: #333; }
+        .c-deep-orange { background: #ff5722; }
+        .c-brown { background: #795548; }
+        .c-grey { background: #607d8b; }
+        .c-light-green { background: #8bc34a; }
+        .c-cyan-light { background: #4dd0e1; }
+        .c-deep-purple { background: #673ab7; }
+        .c-red-light { background: #e74c3c; }
+        .c-blue-light { background: #3498db; }
+        .c-green-light { background: #27ae60; }
+        .c-teal-light { background: #16a085; }
+        .c-purple-light { background: #8e44ad; }
+        .c-red-dark { background: #c0392b; }
+        .c-blue-dark { background: #2980b9; }
+
+        /* Video Section */
+        .video-section {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .video-section h3 {
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        /* Back Button Text */
+        .back-label {
+            font-size: 0.8rem;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .letter-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .letter-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .letter {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <!-- Background -->
+        <div class="bg-layer"></div>
+
+        <!-- Top Navigation -->
+        <div class="top-nav">
+            <button id="back-btn" class="ui-btn" title="Back to ABJAD">
+                <span>←</span>
+            </button>
+        </div>
+
+        <!-- Content -->
+        <div class="content-wrapper">
+            <!-- Alphabet Card -->
+            <div class="alphabet-card">
+                <div class="letter-grid">
+                    <div class="letter c-red">A</div>
+                    <div class="letter c-blue">B</div>
+                    <div class="letter c-yellow">C</div>
+                    <div class="letter c-navy">D</div>
+                    <div class="letter c-green">E</div>
+                    <div class="letter c-cyan">F</div>
+                    <div class="letter c-purple">G</div>
+                    
+                    <div class="letter c-pink">H</div>
+                    <div class="letter c-green">I</div>
+                    <div class="letter c-blue">J</div>
+                    <div class="letter c-pink">K</div>
+                    <div class="letter c-red">L</div>
+                    <div class="letter c-green">M</div>
+                    <div class="letter c-cyan">N</div>
+                    
+                    <div class="letter c-red">O</div>
+                    <div class="letter c-yellow">P</div>
+                    <div class="letter c-cyan">Q</div>
+                    <div class="letter c-green">R</div>
+                    <div class="letter c-purple">S</div>
+                    <div class="letter c-yellow">T</div>
+                    <div class="letter c-green">U</div>
+                    
+                    <div class="letter c-navy">V</div>
+                    <div class="letter c-orange">W</div>
+                    <div class="letter c-red">X</div>
+                    <div class="letter c-cyan">Y</div>
+                    <div class="letter c-pink">Z</div>
+                </div>
+            </div>
+
+            <!-- Video Section -->
+            <div class="video-section">
+                <h3>🎵 ABC Song - Learn the Alphabet!</h3>
+                <div class="video-container">
+                    <iframe 
+                        width="560" 
+                        height="315" 
+                        src="https://www.youtube.com/embed/75p-N7HxXO8" 
+                        title="ABC Song for Kids A–Z Alphabet Song Uppercase & Lowercase Letters" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- --- JAVASCRIPT LOGIC --- -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const backBtn = document.getElementById('back-btn');
+
+            // Back button: navigate to abjad.html
+            if (backBtn) {
+                backBtn.addEventListener('click', () => {
+                    window.location.href = 'abjad.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

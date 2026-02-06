@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumoria Game</title>
+    
+    <!-- Importing 'Titan One' font for the cartoon look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/css2">
+    <link href="https://fonts.googleapis.com/css2?family=Titan+One&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- GENERAL SETUP --- */
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden; /* Prevents scrolling */
+            font-family: 'Titan One', cursive;
+        }
+
+        /* =========================================
+           SCENE 1: SPLASH SCREEN (White Background)
+           ========================================= */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 9999; /* Keeps it on top */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Transition settings for the fade out */
+            transition: opacity 1.5s ease-in-out, visibility 1.5s;
+        }
+
+        /* The class we add via JS to hide the screen */
+        #splash-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .splash-content {
+            display: flex;
+            align-items: flex-end; /* Aligns text bottom with image bottom */
+            gap: 20px;
+        }
+
+        .splash-text {
+            text-align: right;
+            color: #8fb368;
+            font-size: 80px;
+            line-height: 0.85;
+            text-shadow: 2px 2px 0px #6d8f4d; /* Slight 3D outline */
+        }
+
+        .splash-mascot {
+            width: 220px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* =========================================
+           SCENE 2: MAIN MENU (Jungle Background)
+           ========================================= */
+        #game-screen {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            /* Sky Gradient */
+            background: linear-gradient(to bottom, #dff6ff 0%, #aaddff 100%);
+        }
+
+        /* --- LANDSCAPE LAYERS --- */
+        .ground {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 35%;
+            background-color: #bfe678; /* Grass Green */
+            z-index: 1;
+        }
+
+        /* CSS Pattern to create the wooden fence */
+        .fence {
+            position: absolute;
+            bottom: 30%;
+            width: 100%;
+            height: 80px;
+            opacity: 0.7;
+            background: repeating-linear-gradient(
+                90deg,
+                #8c5e3c 0,
+                #8c5e3c 15px,
+                transparent 15px,
+                transparent 30px
+            );
+            border-top: 8px solid #8c5e3c;
+            border-bottom: 8px solid #8c5e3c;
+            z-index: 0;
+        }
+
+        /* --- CENTRAL CARD UI --- */
+        .center-card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+            background-color: white;
+            width: 650px;
+            height: 380px;
+            border-radius: 40px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .title-small {
+            font-size: 50px;
+            color: #7ab357;
+            margin-bottom: -25px;
+            letter-spacing: 1px;
+        }
+
+        .title-big {
+            font-size: 140px;
+            color: #7ab357;
+            margin: 0;
+            line-height: 1;
+            text-shadow: 4px 4px 0 rgba(0,0,0,0.05);
+        }
+
+        /* Green Play Button */
+        .play-btn {
+            background-color: #9cd438;
+            border: 5px solid #6a9c24;
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+            box-shadow: inset 0 5px 10px rgba(255,255,255,0.5), 0 5px 0 #6a9c24;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .play-btn:active {
+            transform: translateY(5px);
+            box-shadow: inset 0 5px 10px rgba(255,255,255,0.5), 0 0 0 #6a9c24;
+        }
+
+        /* CSS Arrow Icon */
+        .arrow {
+            width: 0; 
+            height: 0; 
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            border-left: 35px solid white;
+            margin-left: 8px;
+        }
+
+        /* --- TOP RIGHT MENU BUTTON --- */
+        .menu-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 90px;
+            height: 90px;
+            background-color: #76c043;
+            border: 4px solid #3e6b1d;
+            border-radius: 20px;
+            box-shadow: inset 0 5px 10px rgba(255,255,255,0.4), 0 8px 0 #3e6b1d;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+        }
+        .menu-line {
+            width: 50px;
+            height: 10px;
+            background-color: #2a4d12;
+            border-radius: 5px;
+            position: relative;
+        }
+        /* The dot on the menu line */
+        .menu-line::before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            background-color: #2a4d12;
+            border-radius: 50%;
+        }
+
+        /* --- ANIMALS & SCENERY --- */
+        .asset {
+            position: absolute;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        /* Giraffe Position */
+        .giraffe {
+            bottom: 5%;
+            left: -2%;
+            width: 320px;
+            height: auto;
+            z-index: 5;
+        }
+
+        /* Deer Position */
+        .deer {
+            bottom: 5%;
+            right: 0%;
+            width: 300px;
+            height: auto;
+            z-index: 5;
+        }
+
+        /* Monkeys Center Position */
+        .monkeys {
+            bottom: 2%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 380px;
+            height: auto;
+            z-index: 20; /* In front of card */
+        }
+
+        /* Trees Background */
+        .tree-left { bottom: 25%; left: 8%; width: 140px; z-index: 2; opacity: 0.9; }
+        .tree-right { bottom: 25%; right: 8%; width: 140px; z-index: 2; opacity: 0.9; }
+
+        /* Simple CSS Birds */
+        .bird {
+            position: absolute;
+            width: 40px; height: 20px;
+            border-top: 4px solid white;
+            border-left: 4px solid white;
+            transform: rotate(45deg);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- SCREEN 1: THE SPLASH SCREEN -->
+    <div id="splash-screen">
+        <div class="splash-content">
+            <div class="splash-text">
+                LUMORIA<br>GAME
+            </div>
+            <!-- Placeholder for Scene 1 Crocodile -->
+            <img src="Crocodile.png" class="splash-mascot" alt="Crocodile">
+        </div>
+    </div>
+
+
+    <!-- SCREEN 2: THE MAIN MENU -->
+    <div id="game-screen">
+        
+        <!-- Menu Button -->
+        <div class="menu-btn">
+            <div class="menu-line"></div>
+            <div class="menu-line"></div>
+            <div class="menu-line"></div>
+        </div>
+
+        <!-- Scenery Backgrounds -->
+        <div class="bird" style="top: 15%; left: 35%;"></div>
+        <div class="bird" style="top: 10%; left: 60%;"></div>
+        <div class="fence"></div>
+        <div class="ground"></div>
+
+        <!-- Tree Placeholders -->
+        <img src="https://cdn-icons-png.flaticon.com/512/490/490091.png" class="asset tree-left" alt="Tree">
+        <img src="https://cdn-icons-png.flaticon.com/512/490/490091.png" class="asset tree-right" alt="Tree">
+
+        <!-- Center Card -->
+        <div class="center-card">
+            <div class="title-small">LUMORIA</div>
+            <h1 class="title-big">GAME</h1>
+            <div class="play-btn">
+                <div class="arrow"></div>
+            </div>
+        </div>
+
+        <!-- Animals -->
+        <!-- Note: Flowers/Shoes have been removed from the bottom corners -->
+        
+        <!-- Placeholder for Giraffe -->
+        <img src="https://cdn-icons-png.flaticon.com/512/616/616554.png" class="asset giraffe" alt="Giraffe">
+        
+        <!-- Placeholder for Deer -->
+        <img src="https://cdn-icons-png.flaticon.com/512/2219/2219730.png" class="asset deer" alt="Deer">
+        
+    </div>
+
+    <!-- JAVASCRIPT TO HANDLE TRANSITION -->
+    <script>
+        window.addEventListener('load', () => {
+            // Select the splash screen element
+            const splash = document.getElementById('splash-screen');
+            
+            // Wait 3000 milliseconds (3 seconds) then hide Scene 1
+            setTimeout(() => {
+                splash.classList.add('hidden');
+            }, 3000); 
+        });
+    </script>
+
+</body>
+</html>

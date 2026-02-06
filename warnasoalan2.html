@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>SOALAN 2 - Lumoria Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;user-select:none}
+        body{font-family:'Fredoka One',cursive;background:#87ceeb;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+        #game-container{width:100%;max-width:1000px;background:#fff;border-radius:15px;box-shadow:0 0 30px rgba(0,0,0,.5);position:relative;overflow:hidden}
+        .bg-layer{position:absolute;inset:0;background:linear-gradient(to bottom,#e3f2fd 0%,#e8f5e9 100%);z-index:0}
+        .decorative-bg{position:absolute;inset:0;z-index:1}
+        .tree-left{position:absolute;left:0;top:50%;transform:translateY(-50%);width:200px;height:300px;background:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 150%22%3E%3Cellipse cx=%2250%22 cy=%2240%22 rx=%2235%22 ry=%2245%22 fill=%22%23558b2f%22/%3E%3Crect x=%2245%22 y=%2280%22 width=%2210%22 height=%2270%22 fill=%22%238d6e63%22/%3E%3C/svg%3E') no-repeat center;background-size:contain;opacity:.3}
+        .tree-right{position:absolute;right:0;top:50%;transform:translateY(-50%);width:200px;height:300px;background:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 150%22%3E%3Cellipse cx=%2250%22 cy=%2240%22 rx=%2235%22 ry=%2245%22 fill=%22%23558b2f%22/%3E%3Crect x=%2245%22 y=%2280%22 width=%2210%22 height=%2270%22 fill=%22%238d6e63%22/%3E%3C/svg%3E') no-repeat center;background-size:contain;opacity:.3}
+        .content{position:relative;z-index:5;padding:40px}
+        .title{text-align:center;font-size:3.5rem;color:#000;text-transform:uppercase;margin-bottom:30px;font-weight:900;text-shadow:2px 2px 0 rgba(0,0,0,.1)}
+        .question-container{background:#fff;border-radius:20px;padding:40px;box-shadow:0 5px 15px rgba(0,0,0,.1);display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;margin-bottom:40px}
+        .color-display{display:flex;align-items:center;justify-content:center;max-width:100%}
+        .color-splat{width:220px;height:140px;border-radius:18px;background:#7b4b10;box-shadow:0 10px 30px rgba(123,75,16,.25);}
+        .question-text{font-size:2.5rem;color:#000;text-align:center;font-weight:bold;line-height:1.4}
+        .answer-buttons{display:flex;gap:15px;justify-content:center;flex-wrap:wrap}
+        .answer-btn{background:#fff;border:3px solid #000;padding:15px 30px;font-size:1.8rem;font-family:'Fredoka One',cursive;border-radius:12px;cursor:pointer;font-weight:bold;transition:all .2s;color:#000;min-width:150px}
+        .answer-btn:hover{background:#e0e0e0;transform:translateY(-3px);box-shadow:0 5px 15px rgba(0,0,0,.2)}
+        .answer-btn:active{transform:translateY(-1px)}
+        .or-text{font-size:1.8rem;color:#666;display:flex;align-items:center;font-weight:bold}
+        @media(max-width:768px){.content{padding:20px}.title{font-size:2.5rem;margin-bottom:20px}.question-container{grid-template-columns:1fr;padding:20px;gap:20px}.question-text{font-size:1.8rem}.answer-btn{padding:12px 24px;font-size:1.5rem;min-width:120px}.tree-left,.tree-right{width:100px;height:150px}}
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div class="bg-layer"></div>
+        <div class="decorative-bg">
+            <div class="tree-left"></div>
+            <div class="tree-right"></div>
+        </div>
+        <div class="content">
+            <h1 class="title">SOALAN 2</h1>
+            <div class="question-container">
+                <div class="color-display">
+                    <div class="color-splat" aria-hidden="true"></div>
+                </div>
+                <div class="question-text">Apakah warna ini?</div>
+            </div>
+            <div class="answer-buttons">
+                <button id="kuning-btn" class="answer-btn">Kuning</button>
+                <div class="or-text">atau</div>
+                <button id="coklat-btn" class="answer-btn">Coklat</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded',()=>{
+            const kuningBtn=document.getElementById('kuning-btn');
+            const coklatBtn=document.getElementById('coklat-btn');
+            if(kuningBtn){kuningBtn.addEventListener('click',()=>{window.location.href='warnasoalan2salah.html'});}
+            if(coklatBtn){coklatBtn.addEventListener('click',()=>{window.location.href='warnasoalan2betul.html'});}
+        });
+    </script>
+</body>
+</html>

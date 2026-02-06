@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMORIA GAMES</title>
+    <link rel="stylesheet" href="app.css">
+
+<!-- Importing the font that matches the image style -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/css2">
+    <link href="https://fonts.googleapis.com/css2?family=Titan+One&display=swap" rel="stylesheet">
+
+    <style>
+        /* 1. Basic Page Setup */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #eef1f6; /* The light grey frame background */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* 2. The White Card Container */
+        .game-card {
+            background-color: white;
+            width: 80%;
+            max-width: 900px;
+            height: 500px; /* Adjust height as needed */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            overflow: hidden; /* Keeps content inside the rounded corners if you add them */
+        }
+
+        /* 3. The Flex Container for Content */
+        .content-wrapper {
+            display: flex;
+            align-items: flex-end; /* Aligns text and image at the bottom */
+            gap: 20px; /* Space between text and image */
+        }
+
+        /* 4. The Typography (Text Styling) */
+        .title-text {
+            font-family: 'Titan One', cursive; /* The chunky font */
+            font-size: 80px;
+            line-height: 0.85; /* Squishes the two lines closer together */
+            text-align: center;
+            color: #8fb368; /* The specific light green color */
+            
+            /* This adds the slight 3D depth/outline effect seen in the image */
+            text-shadow: 
+                2px 2px 0px #6d8f4d,
+                -1px -1px 0px rgba(255,255,255,0.5);
+            
+            /* Positioning adjustment */
+            margin-bottom: 50px; 
+        }
+
+        /* 5. The Image Styling */
+        .mascot-image {
+            width: 250px; /* Adjust size based on your actual image */
+            height: auto;
+            /* This makes the image sit slightly lower/offset like the original */
+            transform: translateY(20px); 
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+                align-items: center;
+            }
+            .title-text {
+                font-size: 50px;
+                margin-bottom: 20px;
+            }
+            .mascot-image {
+                width: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-card">
+        <div class="content-wrapper">
+            
+            <!-- THE TEXT -->
+            <div class="title-text">
+                LUMORIA<br>
+                GAME
+            </div>
+
+            <!-- THE IMAGE -->
+            <!-- REPLACE 'your-crocodile-image.png' with your actual file path -->
+            <img src="Crocodile.png" alt="Crocodile Mascot" class="mascot-image">
+            
+        </div>
+    </div>
+
+</body>
+</html>

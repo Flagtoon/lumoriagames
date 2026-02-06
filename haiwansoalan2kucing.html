@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>SOALAN 2 - Lumoria Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;user-select:none}
+        body{font-family:'Fredoka One',cursive;background:#2c3e50;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+        #game-container{width:100%;max-width:1000px;background:#fff;border-radius:15px;box-shadow:0 0 30px rgba(0,0,0,.5);position:relative;padding:40px;overflow:hidden}
+        .bg-layer{position:absolute;inset:0;background:linear-gradient(to bottom,#dbeff9 0%,#dbeff9 55%,#aed581 55%,#aed581 100%);border-radius:15px;z-index:0}
+        .question-title{position:relative;z-index:5;text-align:center;font-size:3.5rem;color:#000;text-transform:uppercase;margin-bottom:40px;text-shadow:2px 2px 0 rgba(0,0,0,.1)}
+        .question-card{position:relative;z-index:5;background:#fff;padding:40px;border-radius:20px;box-shadow:0 5px 15px rgba(0,0,0,.1);display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;margin-bottom:40px}
+        .animal-image-container{display:flex;align-items:center;justify-content:center}
+        .animal-image-container img{max-width:100%;height:auto;max-height:320px;object-fit:contain}
+        .question-text{font-size:2.5rem;color:#333;text-align:center;line-height:1.4}
+        .answer-options{position:relative;z-index:5;display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap}
+        .answer-btn{background:#fff;border:3px solid #8cc63f;padding:15px 40px;border-radius:50px;font-size:1.8rem;font-weight:bold;color:#333;cursor:pointer;transition:all .2s;box-shadow:0 4px 8px rgba(0,0,0,.1)}
+        .answer-btn:hover{transform:scale(1.05);background:#8cc63f;color:#fff;box-shadow:0 6px 12px rgba(0,0,0,.2)}
+        .answer-btn.correct{border-color:#76b041}
+        .answer-btn.correct:hover{background:#76b041}
+        .answer-btn.wrong{border-color:#ef476f}
+        .answer-btn.wrong:hover{background:#ef476f}
+        .separator{font-size:1.5rem;color:#999;font-weight:bold}
+        @media(max-width:768px){#game-container{padding:20px}.question-title{font-size:2.5rem;margin-bottom:20px}.question-card{grid-template-columns:1fr;padding:20px;gap:20px;margin-bottom:20px}.question-text{font-size:1.8rem}.answer-btn{padding:12px 30px;font-size:1.4rem}}
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div class="bg-layer"></div>
+        <h1 class="question-title">SOALAN 2</h1>
+        <div class="question-card">
+            <div class="animal-image-container">
+                <!-- Use local image in Pic folder; replace filename if different -->
+                <img src="Pic/cat.png" alt="Kucing" title="Kucing">
+            </div>
+            <div class="question-text">Apakah haiwan ini?</div>
+        </div>
+        <div class="answer-options">
+            <button id="anjing-btn" class="answer-btn wrong">Anjing</button>
+            <span class="separator">atau</span>
+            <button id="kucing-btn" class="answer-btn correct">Kucing</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded',()=>{
+            const anjingBtn=document.getElementById('anjing-btn');
+            const kucingBtn=document.getElementById('kucing-btn');
+
+            if(kucingBtn){
+                kucingBtn.addEventListener('click',()=>{
+                    window.location.href='haiwansoalan2kucingbetul.html';
+                });
+            }
+
+            if(anjingBtn){
+                anjingBtn.addEventListener('click',()=>{
+                    window.location.href='haiwansoalan2kucingsalah.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

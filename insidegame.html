@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumoria Game Prototype</title>
+    <!-- Import Cartoon Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS STYLES --- */
+
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none; /* Prevents text selection */
+        }
+
+        body {
+            font-family: 'Fredoka One', cursive;
+            background-color: #2c3e50; /* Dark outside background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* The Main Game Container */
+        #game-container {
+            width: 800px;
+            height: 450px;
+            background-color: #fff;
+            position: relative;
+            overflow: hidden; /* Clips anything outside the box */
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        /* Screen Wrapper */
+        .screen {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* Utility Classes for Transitions */
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .active {
+            opacity: 1;
+            z-index: 10;
+        }
+
+        /* --- SCREEN 1: SPLASH SCREEN --- */
+        #screen-1 {
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .splash-title {
+            font-size: 3.5rem;
+            color: #7BB643; /* Logo Green */
+            text-align: center;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 0px #5a8f29;
+        }
+
+        .mascot-croc {
+            width: 150px;
+            height: 150px;
+            /* Placeholder styling */
+            background-color: #7BB643;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border: 4px solid #5a8f29;
+        }
+
+        /* --- SCREEN 2: MAIN MENU --- */
+        .bg-layer {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            z-index: 0;
+            /* Simulating the Sky/Grass background */
+            background: linear-gradient(to bottom, #dbeff9 0%, #dbeff9 55%, #aed581 55%, #aed581 100%);
+        }
+
+        /* The White Card in Center */
+        .menu-card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px 60px;
+            border-radius: 30px;
+            text-align: center;
+            z-index: 5;
+            width: 65%;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .menu-title-text {
+            color: #76b041;
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+
+        .menu-title-big {
+            font-size: 4.5rem;
+            display: block;
+            color: #76b041;
+            /* Adds the white outline effect */
+            text-shadow: 
+                3px 3px 0 #fff, 
+                -1px -1px 0 #fff,  
+                1px -1px 0 #fff,
+                -1px 1px 0 #fff,
+                1px 1px 0 #fff;
+        }
+
+        /* Green Play Button */
+        .btn-green-play {
+            background: #8cc63f;
+            border: none;
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #5a8f29, 0 10px 10px rgba(0,0,0,0.1);
+            margin-top: 5px;
+            transition: transform 0.1s, box-shadow 0.1s;
+            position: relative;
+            top: 15px; /* Pulls it down slightly over the card edge */
+        }
+
+        .btn-green-play:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #5a8f29;
+        }
+
+        /* White Arrow Icon */
+        .arrow-icon {
+            display: inline-block;
+            width: 0; 
+            height: 0; 
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            border-left: 20px solid white;
+            margin-left: 5px;
+        }
+
+        /* Animal Placeholders */
+        .animal {
+            position: absolute;
+            z-index: 6; 
+            pointer-events: none; /* Let clicks pass through images */
+        }
+
+        .giraffe-placeholder {
+            bottom: -20px;
+            left: 30px;
+            height: 380px;
+            width: 100px;
+            background: #e67e22; /* Orange */
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            opacity: 0.8;
+        }
+
+        .monkey-placeholder {
+            bottom: 0;
+            left: 35%;
+            height: 80px;
+            width: 150px;
+            background: #8d6e63; /* Brown */
+            border-radius: 20px 20px 0 0;
+            z-index: 7;
+            text-align: center;
+            color: white;
+            line-height: 80px;
+            opacity: 0.8;
+        }
+
+        .deer-placeholder {
+            bottom: 0;
+            right: 20px;
+            height: 150px;
+            width: 120px;
+            background: #a1887f;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+            color: white;
+            line-height: 150px;
+            opacity: 0.8;
+        }
+
+        /* --- SCREEN 3: GAME LEVEL --- */
+        .level-title {
+            position: absolute;
+            top: 15%;
+            width: 100%;
+            text-align: center;
+            font-size: 3.5rem;
+            color: black;
+            z-index: 5;
+            text-transform: uppercase;
+        }
+
+        /* Top Navigation Buttons */
+        .top-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            display: flex;
+            gap: 10px;
+        }
+
+        .ui-btn {
+            background: #8cc63f;
+            border: 2px solid #5a8f29;
+            border-radius: 12px;
+            width: 55px;
+            height: 55px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #5a8f29;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .ui-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .hamburger span {
+            width: 25px;
+            height: 4px;
+            background: white;
+            border-radius: 2px;
+        }
+
+        /* Game Board Center */
+        .game-area {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            z-index: 5;
+        }
+
+        .nav-btn {
+            background: #8cc63f;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            color: white;
+            font-size: 2rem;
+            box-shadow: 0 4px 0 #5a8f29;
+            cursor: pointer;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .nav-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .block-container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .blocks {
+            display: flex;
+            align-items: flex-end; /* Align bottom */
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .block {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+        }
+
+        .b-yellow { background: #ffd166; }
+        .b-red { background: #ef476f; width: 80px; height: 80px; font-size: 3.5rem; margin-bottom: 10px; }
+        .b-pink { background: #ff66b2; }
+
+        .small-play-btn {
+            background: #8cc63f;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            color: white;
+            position: absolute;
+            bottom: -25px;
+            box-shadow: 0 4px 0 #5a8f29;
+            cursor: pointer;
+            font-size: 1.2rem;
+            border: 4px solid white;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+
+        <!-- SCREEN 1: SPLASH -->
+        <div id="screen-1" class="screen active">
+            <h1 class="splash-title">LUMORIA<br>GAME</h1>
+            <!-- Baby Crocodile Mascot -->
+            <div class="mascot-croc">
+                <img src="Pic/Crocodile.png" alt="Baby Crocodile" style="width: 120px; height: 120px; object-fit: contain;">
+            </div>
+        </div>
+
+        <!-- SCREEN 2: MAIN MENU -->
+        <div id="screen-2" class="screen hidden">
+            <!-- Background -->
+            <div class="bg-layer"></div>
+
+            <!-- Top Right Menu Button -->
+            <div class="top-nav">
+                <button class="ui-btn">
+                    <div class="hamburger"><span></span><span></span><span></span></div>
+                </button>
+            </div>
+
+            <!-- Animal Placeholders (Replace these with <img> tags) -->
+            <div class="animal giraffe-placeholder">Giraffe</div>
+            <div class="animal monkey-placeholder">Monkeys</div>
+            <div class="animal deer-placeholder">Deer</div>
+
+            <!-- Center Menu -->
+            <div class="menu-card">
+                <div class="menu-title-text">
+                    LUMORIA
+                    <span class="menu-title-big">GAME</span>
+                </div>
+                <button id="play-btn" class="btn-green-play">
+                    <span class="arrow-icon"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 3: GAME LEVEL -->
+        <div id="screen-3" class="screen hidden">
+            <!-- Background (Same style as menu) -->
+            <div class="bg-layer"></div>
+
+            <!-- Nav -->
+            <div class="top-nav">
+                <button class="ui-btn">🏠</button>
+                <button class="ui-btn">
+                     <div class="hamburger"><span></span><span></span><span></span></div>
+                </button>
+            </div>
+
+            <h2 class="level-title">ABJAD</h2>
+
+            <div class="game-area">
+                <button class="nav-btn">&lt;</button>
+                
+                <div class="block-container">
+                    <div class="blocks">
+                        <div class="block b-yellow">B</div>
+                        <div class="block b-red">A</div>
+                        <div class="block b-pink">C</div>
+                    </div>
+                    <button class="small-play-btn">▶</button>
+                </div>
+
+                <button class="nav-btn">&gt;</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- --- JAVASCRIPT LOGIC --- -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const screen1 = document.getElementById('screen-1');
+            const screen2 = document.getElementById('screen-2');
+            const screen3 = document.getElementById('screen-3');
+            const playBtn = document.getElementById('play-btn');
+
+            // 1. Transition: Splash (Screen 1) -> Menu (Screen 2)
+            // Happens automatically after 3 seconds
+            setTimeout(() => {
+                screen1.style.opacity = '0'; // Start fade out
+                
+                setTimeout(() => {
+                    screen1.classList.remove('active');
+                    screen1.classList.add('hidden');
+                    
+                    screen2.classList.remove('hidden');
+                    // Force a browser reflow to enable transition
+                    void screen2.offsetWidth; 
+                    screen2.classList.add('active');
+                }, 500); // Wait 0.5s for opacity transition to finish
+            }, 3000); 
+
+            // 2. Interaction: Click Play Button -> Navigate to abjad.html
+            playBtn.addEventListener('click', () => {
+                screen2.style.opacity = '0'; // Fade out menu
+
+                setTimeout(() => {
+                    window.location.href = 'abjad.html';
+                }, 500);
+            });
+
+        });
+    </script>
+</body>
+</html>

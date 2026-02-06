@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>SOALAN 4 - Salah - Lumoria Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;user-select:none}
+        body{font-family:'Fredoka One',cursive;background:#2c3e50;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+        #game-container{width:100%;max-width:1000px;background:#fff;border-radius:15px;box-shadow:0 0 30px rgba(0,0,0,.5);position:relative;padding:40px;overflow:hidden}
+        .bg-layer{position:absolute;inset:0;background:linear-gradient(to bottom,#ffcccc 0%,#ffcccc 50%,#ffe0b2 50%,#ffe0b2 100%);border-radius:15px;z-index:0}
+        .top-nav{position:relative;z-index:10;display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;gap:10px}
+        .nav-btn{background:#8cc63f;border:none;width:55px;height:55px;border-radius:12px;color:white;font-size:2rem;box-shadow:0 4px 0 #5a8f29;cursor:pointer;font-family:'Fredoka One',cursive;transition:transform .1s}
+        .nav-btn:hover{transform:translateY(-2px)}
+        .question-title{position:relative;z-index:5;text-align:center;font-size:3.5rem;color:black;text-transform:uppercase;margin-bottom:40px;text-shadow:2px 2px 0 rgba(0,0,0,.1)}
+        .result-card{position:relative;z-index:5;background:white;padding:40px;border-radius:20px;box-shadow:0 5px 15px rgba(0,0,0,.1);display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;margin-bottom:40px}
+        .xmark-container{display:flex;align-items:center;justify-content:center}
+        .xmark-container img{max-width:100%;height:auto;max-height:300px;object-fit:contain;animation:popIn .6s cubic-bezier(.68,-.55,.265,1.55)}
+        .result-text{font-size:2.8rem;color:#d32f2f;text-align:center;line-height:1.4;font-weight:bold}
+        .result-subtext{font-size:1.8rem;color:#666;text-align:center;margin-top:10px}
+        @keyframes popIn{0%{transform:scale(0) rotate(0deg);opacity:0}70%{transform:scale(1.15) rotate(-5deg)}100%{transform:scale(1) rotate(0deg);opacity:1}}
+        .encouragement{position:relative;z-index:5;text-align:center;font-size:1.8rem;color:#e91e63;margin-top:30px;letter-spacing:1px;font-weight:bold}
+        @media(max-width:768px){#game-container{padding:20px}.top-nav{margin-bottom:20px}.question-title{font-size:2.5rem;margin-bottom:20px}.result-card{grid-template-columns:1fr;padding:20px;gap:20px}.result-text{font-size:2rem}.result-subtext{font-size:1.4rem}.nav-btn{width:50px;height:50px;font-size:1.8rem}.encouragement{font-size:1.4rem}}
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div class="bg-layer"></div>
+        <div class="top-nav">
+            <button id="back-btn" class="nav-btn" title="Back to Animals">←</button>
+            <div style="flex:1"></div>
+            <button id="next-btn" class="nav-btn" title="Return">↺</button>
+        </div>
+        <h1 class="question-title">SOALAN 4</h1>
+        <div class="result-card">
+            <div class="xmark-container">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='90' fill='%23f44336' stroke='%23d32f2f' stroke-width='3'/%3E%3Cpath d='M60 60 L140 140 M140 60 L60 140' stroke='white' stroke-width='12' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" alt="Incorrect" title="Incorrect Answer">
+            </div>
+            <div>
+                <div class="result-text">Salah!</div>
+                <div class="result-subtext">Jawapan tidak betul. Cuba lagi!</div>
+            </div>
+        </div>
+        <div class="encouragement">💪 Cuba Lagi! 💪</div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded',()=>{
+            const backBtn=document.getElementById('back-btn');
+            const nextBtn=document.getElementById('next-btn');
+            if(backBtn){backBtn.addEventListener('click',()=>{window.location.href='haiwan.html'});}
+            if(nextBtn){nextBtn.addEventListener('click',()=>{window.location.href='haiwansoalan1panda.html'});}
+        });
+    </script>
+</body>
+</html>

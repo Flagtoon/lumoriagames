@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABJAD - Lumoria Game</title>
+    <!-- Import Cartoon Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS STYLES --- */
+
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Fredoka One', cursive;
+            background-color: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Main Game Container */
+        #game-container {
+            width: 800px;
+            height: 450px;
+            background-color: #fff;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        /* Background Layer */
+        .bg-layer {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            z-index: 0;
+            background: linear-gradient(to bottom, #dbeff9 0%, #dbeff9 55%, #aed581 55%, #aed581 100%);
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+            display: flex;
+            gap: 10px;
+        }
+
+        .ui-btn {
+            background: #8cc63f;
+            border: 2px solid #5a8f29;
+            border-radius: 12px;
+            width: 55px;
+            height: 55px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #5a8f29;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: white;
+            transition: transform 0.1s, box-shadow 0.1s;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .ui-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 4px;
+            background: white;
+            border-radius: 2px;
+        }
+
+        /* Level Title */
+        .level-title {
+            position: absolute;
+            top: 15%;
+            width: 100%;
+            text-align: center;
+            font-size: 3.5rem;
+            color: black;
+            z-index: 5;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+        }
+
+        /* Game Area */
+        .game-area {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            z-index: 5;
+        }
+
+        /* Navigation Buttons */
+        .nav-btn {
+            background: #8cc63f;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            color: white;
+            font-size: 2rem;
+            box-shadow: 0 4px 0 #5a8f29;
+            cursor: pointer;
+            font-family: 'Fredoka One', cursive;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .nav-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        /* Block Container */
+        .block-container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Blocks */
+        .blocks {
+            display: flex;
+            align-items: flex-end;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .block {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+            font-weight: bold;
+        }
+
+        .b-red {
+            background: #ef476f;
+            width: 80px;
+            height: 80px;
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+        }
+
+        .b-yellow {
+            background: #ffd166;
+            color: #333;
+        }
+
+        .b-pink {
+            background: #ff66b2;
+        }
+
+        /* Play Button */
+        .small-play-btn {
+            background: #8cc63f;
+            border: 4px solid white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            color: white;
+            position: absolute;
+            bottom: -25px;
+            box-shadow: 0 4px 0 #5a8f29;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: transform 0.1s, box-shadow 0.1s;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .small-play-btn:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <!-- Background -->
+        <div class="bg-layer"></div>
+
+        <!-- Top Navigation Buttons -->
+        <div class="top-nav">
+            <button id="home-btn" class="ui-btn" title="Home">🏠</button>
+            <button id="menu-btn" class="ui-btn">
+                <div class="hamburger"><span></span><span></span><span></span></div>
+            </button>
+        </div>
+
+        <!-- Level Title -->
+        <h2 class="level-title">ABJAD</h2>
+
+        <!-- Game Area -->
+        <div class="game-area">
+            <!-- Left Navigation Button -->
+            <button id="left-btn" class="nav-btn">&lt;</button>
+            
+            <!-- Blocks Container -->
+            <div class="block-container">
+                <div class="blocks">
+                    <div class="block b-yellow">B</div>
+                    <div class="block b-red">A</div>
+                    <div class="block b-pink">C</div>
+                </div>
+                <button id="play-btn" class="small-play-btn">▶</button>
+            </div>
+
+            <!-- Right Navigation Button -->
+            <button id="right-btn" class="nav-btn">&gt;</button>
+        </div>
+    </div>
+
+    <!-- --- JAVASCRIPT LOGIC --- -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Navigation Button Elements
+            const homeBtn = document.getElementById('home-btn');
+            const leftBtn = document.getElementById('left-btn');
+            const rightBtn = document.getElementById('right-btn');
+            const menuBtn = document.getElementById('menu-btn');
+            const playBtn = document.getElementById('play-btn');
+
+            // Navigation Functions
+            function navigateHome() {
+                window.location.href = 'insidegame.html';
+            }
+
+            function navigateLeft() {
+                window.location.href = 'warna.html';
+            }
+
+            function navigateRight() {
+                window.location.href = 'haiwan.html';
+            }
+
+            function openMenu() {
+                // Menu functionality can be expanded here
+                alert('Menu opened');
+            }
+
+            // Play button: navigate to abjad2.html
+            if (playBtn) {
+                playBtn.addEventListener('click', () => {
+                    window.location.href = 'abjad2.html';
+                });
+            }
+
+            // Event Listeners
+            homeBtn.addEventListener('click', navigateHome);
+            leftBtn.addEventListener('click', navigateLeft);
+            rightBtn.addEventListener('click', navigateRight);
+            menuBtn.addEventListener('click', openMenu);
+
+        });
+    </script>
+</body>
+</html>
