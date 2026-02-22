@@ -178,13 +178,7 @@
             left: 30px;
             height: 380px;
             width: 100px;
-            background: #e67e22; /* Orange */
-            border-radius: 20px 20px 0 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            opacity: 0.8;
+            /* Removed background, border-radius, display, justify-content, align-items, color, and opacity */
         }
 
         .monkey-placeholder {
@@ -192,13 +186,8 @@
             left: 35%;
             height: 80px;
             width: 150px;
-            background: #8d6e63; /* Brown */
-            border-radius: 20px 20px 0 0;
             z-index: 7;
-            text-align: center;
-            color: white;
-            line-height: 80px;
-            opacity: 0.8;
+            /* Removed background, border-radius, text-align, color, line-height, and opacity */
         }
 
         .deer-placeholder {
@@ -206,12 +195,7 @@
             right: 20px;
             height: 150px;
             width: 120px;
-            background: #a1887f;
-            border-radius: 20px 20px 0 0;
-            text-align: center;
-            color: white;
-            line-height: 150px;
-            opacity: 0.8;
+            /* Removed background, border-radius, text-align, color, line-height, and opacity */
         }
 
         /* --- SCREEN 3: GAME LEVEL --- */
@@ -376,9 +360,15 @@
             </div>
 
             <!-- Animal Placeholders (Replace these with <img> tags) -->
-            <div class="animal giraffe-placeholder">Giraffe</div>
-            <div class="animal monkey-placeholder">Monkeys</div>
-            <div class="animal deer-placeholder">Deer</div>
+            <div class="animal giraffe-placeholder">
+                <img src="Pic/giraffe.png" alt="Giraffe" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+            <div class="animal monkey-placeholder">
+                <img src="Pic/monkey.png" alt="Monkeys" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+            <div class="animal deer-placeholder">
+                <img src="Pic/deer.png" alt="Deer" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
 
             <!-- Center Menu -->
             <div class="menu-card">
@@ -464,4 +454,5 @@
 </body>
 
 </html>
+
 
